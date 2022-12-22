@@ -1,0 +1,12 @@
+#headerBar {
+  height: 3rem;
+  border-bottom: 1px grey solid;
+  padding: 5px 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+img {
+  height: 2.5rem;
+  width: auto;
+}

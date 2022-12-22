@@ -1,0 +1,25 @@
+.card {
+  border: 1px grey solid;
+}
+
+.card-header {
+  border-bottom: 1px grey solid;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: lightgrey;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 1.5rem;
+  padding: 10px;
+}
+
+.card-menu:hover {
+  cursor: pointer;
+}
+
+.card-body {
+  height: 10rem;
+}
