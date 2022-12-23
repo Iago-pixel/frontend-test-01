@@ -2,7 +2,11 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 
 import ReduxThunk from "redux-thunk";
 
-const reducers = combineReducers({});
+import { widgetsReducer } from "./modules/widgets/reducer";
+
+const reducers = combineReducers({
+  widgets: widgetsReducer,
+});
 
 const store = createStore(reducers, applyMiddleware(ReduxThunk));
 

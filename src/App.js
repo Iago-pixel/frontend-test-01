@@ -1,12 +1,12 @@
 import "./App.css";
 import { Switchs } from "./routes";
 
-function App() {
+const App = () => {
   return (
     <div className="App">
       <Switchs />
     </div>
   );
-}
+};
 
 export default App;

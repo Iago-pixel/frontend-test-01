@@ -1,5 +1,6 @@
 .card {
   border: 1px grey solid;
+  margin-bottom: 2rem;
 }
 
 .card-header {
@@ -21,5 +22,5 @@
 }
 
 .card-body {
-  height: 10rem;
+  padding: 1rem;
 }
