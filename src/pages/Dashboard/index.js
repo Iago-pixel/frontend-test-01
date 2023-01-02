@@ -1,8 +1,9 @@
 import { Header } from "../../components/Header";
-import { TextField } from "@mui/material";
 import { Card } from "../../components/Card";
 import AddCircleSharpIcon from "@mui/icons-material/AddCircleSharp";
+import { submitData, handleChange } from "../../Utils";
 
+import { TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
@@ -24,10 +25,6 @@ export const Dashboard = () => {
   const dispatch = useDispatch();
   const widgets = useSelector((state) => state.widgets);
 
-  const handleChange = (e, setter) => {
-    setter(e.target.value);
-  };
-
   const handleAddWidget = () => {
     // implementar lógica para proibir nome repetido
     dispatch(addWidgetThunk({ name, data }));
@@ -36,13 +33,8 @@ export const Dashboard = () => {
     handleClose();
   };
 
-  const submitName = (e) => {
-    e.preventDefault();
-    console.log({ name });
-  };
-
   return (
-    <body>
+    <div>
       <Header>
         <TextField
           sx={{ width: "35rem" }}
@@ -76,7 +68,7 @@ export const Dashboard = () => {
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
           >
-            <form onSubmit={submitName}>
+            <form onSubmit={(e) => submitData(e, { name, data })}>
               <Box
                 sx={{
                   position: "absolute",
@@ -129,6 +121,6 @@ export const Dashboard = () => {
           </Modal>
         </div>
       </main>
-    </body>
+    </div>
   );
 };
