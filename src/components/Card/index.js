@@ -170,8 +170,8 @@ export const Card = ({ name, yData, yAxis, ...rest }) => {
                     />
                     <TextField
                       size="small"
-                      id="inputYAxiosName"
-                      label="yAxios' name"
+                      id="inputYAxisName"
+                      label="yAxis' name"
                       variant="outlined"
                       value={newYAxis}
                       onChange={(e) => handleChange(e, setNewYAxis)}

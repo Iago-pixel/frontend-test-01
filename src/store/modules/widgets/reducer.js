@@ -15,8 +15,8 @@ export const widgetsReducer = (state = [], action) => {
         el.name === widgetToEdit.oldName
           ? {
               name: widgetToEdit["name"],
-              data: widgetToEdit["data"],
-              yAxios: widgetToEdit["yAxios"],
+              yData: widgetToEdit["yData"],
+              yAxis: widgetToEdit["yAxis"],
             }
           : el
       );

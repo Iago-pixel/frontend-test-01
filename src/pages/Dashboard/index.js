@@ -78,26 +78,12 @@ export const Dashboard = () => {
         <div id="card-list">
           {search === ""
             ? widgets.map((e, i) => (
-                <Card
-                  key={i}
-                  name={e.name}
-                  yData={e.yData}
-                  yAxis={e.yAxis}
-                  xData={e.xData}
-                  startPoint={e.startPoint}
-                />
+                <Card key={i} name={e.name} yData={e.yData} yAxis={e.yAxis} />
               ))
             : widgets
                 .filter((e, i) => e.name.search(search) !== -1)
                 .map((e, i) => (
-                  <Card
-                    key={i}
-                    name={e.name}
-                    data={e.yData}
-                    yAxis={e.yAxis}
-                    xData={e.xData}
-                    startPoint={e.startPoint}
-                  />
+                  <Card key={i} name={e.name} yData={e.yData} yAxis={e.yAxis} />
                 ))}
         </div>
         <div>
@@ -174,8 +160,8 @@ export const Dashboard = () => {
                 <TextField
                   required
                   size="small"
-                  id="inputYAxiosName"
-                  label="yAxios' name"
+                  id="inputYAxisName"
+                  label="yAxis' name"
                   variant="outlined"
                   value={yAxis}
                   onChange={(e) => handleChange(e, setYAxis)}
