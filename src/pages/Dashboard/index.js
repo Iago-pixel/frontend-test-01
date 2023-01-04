@@ -9,7 +9,7 @@ import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addWidgetThunk } from "../../store/modules/widgets/thunks";
 
@@ -23,16 +23,42 @@ export const Dashboard = () => {
   const handleClose = () => setOpen(false);
 
   const [name, setName] = useState("");
-  const [data, setData] = useState("");
+  const [yData, setYData] = useState("");
+  const [yAxis, setYAxis] = useState("");
+  const [inputNameError, setInputNameError] = useState(false);
+  const [inputYDataError, setInputYDataError] = useState(false);
   const [search, setSearch] = useState("");
+
   const widgets = useSelector((state) => state.widgets);
 
+  useEffect(() => {
+    setInputNameError(widgets.some((el) => el.name === name));
+  }, [name, widgets]);
+
+  useEffect(() => {
+    const regex = new RegExp(/^([1-9]\|)*[1-9]$/);
+
+    if (yData !== "") {
+      setInputYDataError(yData.search(regex) === -1);
+    } else {
+      setInputYDataError(false);
+    }
+  }, [yData]);
+
   const handleAddWidget = () => {
-    // implementar lógica para proibir nome repetido
-    dispatch(addWidgetThunk({ name, data }));
-    setName("");
-    setData("");
-    handleClose();
+    const error = inputYDataError || inputNameError;
+
+    if (yData === "") {
+      setInputYDataError(true);
+    } else {
+      if (!error) {
+        dispatch(addWidgetThunk({ name, yAxis, yData }));
+        setName("");
+        setYData("");
+        setYAxis("");
+        handleClose();
+      }
+    }
   };
 
   return (
@@ -52,11 +78,27 @@ export const Dashboard = () => {
         <div id="card-list">
           {search === ""
             ? widgets.map((e, i) => (
-                <Card key={i} name={e.name} data={e.data} />
+                <Card
+                  key={i}
+                  name={e.name}
+                  yData={e.yData}
+                  yAxis={e.yAxis}
+                  xData={e.xData}
+                  startPoint={e.startPoint}
+                />
               ))
             : widgets
                 .filter((e, i) => e.name.search(search) !== -1)
-                .map((e, i) => <Card key={i} name={e.name} data={e.data} />)}
+                .map((e, i) => (
+                  <Card
+                    key={i}
+                    name={e.name}
+                    data={e.yData}
+                    yAxis={e.yAxis}
+                    xData={e.xData}
+                    startPoint={e.startPoint}
+                  />
+                ))}
         </div>
         <div>
           <Button onClick={handleOpen}>
@@ -78,7 +120,7 @@ export const Dashboard = () => {
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
           >
-            <form onSubmit={(e) => submitData(e, { name, data })}>
+            <form onSubmit={(e) => submitData(e, { name, yAxis, yData })}>
               <Box
                 sx={{
                   position: "absolute",
@@ -106,6 +148,7 @@ export const Dashboard = () => {
                   Add widget
                 </Typography>
                 <TextField
+                  required
                   size="small"
                   id="inputName"
                   label="name"
@@ -113,14 +156,29 @@ export const Dashboard = () => {
                   value={name}
                   onChange={(e) => handleChange(e, setName)}
                   sx={{ paddingBottom: "10px" }}
+                  error={inputNameError}
+                  helperText={inputNameError ? "Name already exist" : ""}
                 />
                 <TextField
+                  required
                   size="small"
-                  id="inputData"
-                  label="data"
+                  id="inputYData"
+                  label="yData"
                   variant="outlined"
-                  value={data}
-                  onChange={(e) => handleChange(e, setData)}
+                  value={yData}
+                  onChange={(e) => handleChange(e, setYData)}
+                  sx={{ paddingBottom: "10px" }}
+                  error={inputYDataError}
+                  helperText="example format: 1|3|2|7"
+                />
+                <TextField
+                  required
+                  size="small"
+                  id="inputYAxiosName"
+                  label="yAxios' name"
+                  variant="outlined"
+                  value={yAxis}
+                  onChange={(e) => handleChange(e, setYAxis)}
                   sx={{ paddingBottom: "10px" }}
                 />
                 <Button variant="contained" onClick={handleAddWidget}>

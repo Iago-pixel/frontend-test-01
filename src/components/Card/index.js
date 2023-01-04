@@ -1,5 +1,3 @@
-import "./style.css";
-
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
@@ -10,8 +8,8 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { TextField } from "@mui/material";
 
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { removeWidget } from "../../store/modules/widgets/actions";
 import { submitData, handleChange } from "../../Utils";
@@ -20,16 +18,34 @@ import { editWidgetThunk } from "../../store/modules/widgets/thunks";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
-export const Card = ({ name, data, ...rest }) => {
+import "./style.css";
+
+export const Card = ({ name, yData, yAxis, ...rest }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const open = Boolean(anchorEl);
   const dispatch = useDispatch();
 
   const [newName, setNewName] = useState(name);
-  const [newData, setNewData] = useState(data.join("|"));
+  const [newYData, setNewYData] = useState(yData.join("|"));
+  const [newYAxis, setNewYAxis] = useState(yAxis);
+  const [inputNameError, setInputNameError] = useState(false);
+  const [inputYDataError, setInputYDataError] = useState(false);
 
   const [openModel, setOpenModel] = useState(false);
+
+  const widgets = useSelector((state) => state.widgets);
+
+  useEffect(() => {
+    setInputNameError(
+      widgets.some((el) => el.name === newName && newName !== name)
+    );
+  }, [newName, widgets, name]);
+
+  useEffect(() => {
+    const regex = new RegExp(/^([1-9]\|)*[1-9]$/);
+    setInputYDataError(newYData.search(regex) === -1);
+  }, [newYData]);
 
   const handleOpenModel = () => {
     setOpenModel(true);
@@ -50,9 +66,20 @@ export const Card = ({ name, data, ...rest }) => {
   };
 
   const handleEdit = () => {
-    dispatch(editWidgetThunk({ oldName: name, name: newName, data: newData }));
-    handleCloseModel();
-    handleCloseMenu();
+    const error = inputYDataError || inputNameError;
+
+    if (!error) {
+      dispatch(
+        editWidgetThunk({
+          oldName: name,
+          name: newName,
+          yAxis: newYAxis,
+          yData: newYData,
+        })
+      );
+      handleCloseModel();
+      handleCloseMenu();
+    }
   };
 
   const options = {
@@ -61,9 +88,14 @@ export const Card = ({ name, data, ...rest }) => {
     },
     series: [
       {
-        data: data,
+        data: yData,
       },
     ],
+    yAxis: {
+      title: {
+        text: yAxis,
+      },
+    },
   };
 
   return (
@@ -95,8 +127,9 @@ export const Card = ({ name, data, ...rest }) => {
                 onClose={handleCloseModel}
                 aria-labelledby="modal-modal-title"
               >
-                <form
-                  onSubmit={(e) => submitData(e, { name, newName, newData })}
+                <Box
+                  component="form"
+                  onSubmit={(e) => submitData(e, { name, newName, newYData })}
                 >
                   <Box
                     sx={{
@@ -132,21 +165,34 @@ export const Card = ({ name, data, ...rest }) => {
                       value={newName}
                       onChange={(e) => handleChange(e, setNewName)}
                       sx={{ paddingBottom: "10px" }}
+                      error={inputNameError}
+                      helperText={inputNameError ? "Name already exist" : ""}
                     />
                     <TextField
                       size="small"
-                      id="inputData"
-                      label="data"
+                      id="inputYAxiosName"
+                      label="yAxios' name"
                       variant="outlined"
-                      value={newData}
-                      onChange={(e) => handleChange(e, setNewData)}
+                      value={newYAxis}
+                      onChange={(e) => handleChange(e, setNewYAxis)}
                       sx={{ paddingBottom: "10px" }}
+                    />
+                    <TextField
+                      size="small"
+                      id="inputYData"
+                      label="yData"
+                      variant="outlined"
+                      value={newYData}
+                      onChange={(e) => handleChange(e, setNewYData)}
+                      sx={{ paddingBottom: "10px" }}
+                      error={inputYDataError}
+                      helperText="example format: 1|3|2|7"
                     />
                     <Button variant="contained" onClick={() => handleEdit()}>
                       Change
                     </Button>
                   </Box>
-                </form>
+                </Box>
               </Modal>
             </div>
             <MenuItem onClick={handleRemove}>Remove</MenuItem>

@@ -13,7 +13,11 @@ export const widgetsReducer = (state = [], action) => {
 
       const stateChanger = state.map((el) =>
         el.name === widgetToEdit.oldName
-          ? { name: widgetToEdit["name"], data: widgetToEdit["data"] }
+          ? {
+              name: widgetToEdit["name"],
+              data: widgetToEdit["data"],
+              yAxios: widgetToEdit["yAxios"],
+            }
           : el
       );
 

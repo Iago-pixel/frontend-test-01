@@ -14,57 +14,66 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
-### `npm test`
+### `Projeto desenvolvido para o desafio para vaga de frontend da Delfosim`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+# Desafio Front-end Delfosim
 
-### `npm run build`
+> Desafio para ingressar como Front-end Developer na Delfosim em Fortaleza-CE
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Sobre o desafio
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Não será passado prazo para entrega, verifique os pré-requisitos e nos dê seu prazo, mas fique atento pois vamos avaliar mais rigorosamente seu código quanto mais demorar para entregar a partir da data em que foi feito o fork desse repositório. A ideia é simples, você terá que desenvolver (com dados falsos) seguindo os pré-requisitos e o seguinte layout:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+![Desafio](images/tela-01.png?raw=true "Desafio")
 
-### `npm run eject`
+## Ações
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- O usuário deve ser capaz de incluir um novo widget(Gráfico), editar e remover
+- No momento da inclusão desse widget o usuário deve fornecer os valores falsos e na edição o mesmo deve alterar os valores cadastrados
+- Todos esses widgets devem ser listados no Dashboard
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Pré requisitos
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- ReactJS
+- Utilize desses UI Frameworks ([Bootstrap](https://react-bootstrap.github.io/), [Semantic](https://react.semantic-ui.com/) ou [Material](https://material-ui.com/pt/))
+- Documentar como rodamos servidor do projeto no README.MD
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Dicas
 
-## Learn More
+- React Router
+- Highcharts
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Diferenciais
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Código bem escrito e documentado
+- Arquivos pequenos com poucas responsabilidades
+- Redux
+- Boa usabilidade
+- Feedback para o usuário no carregamento da consulta
+- Layout flexível (Flexbox)
+- Utilizar as novas features do ECMA
 
-### Code Splitting
+## Pronto para começar o desafio?
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- Faça um "fork" desse repositório na sua conta do Github
+- Crie uma branch com o seu nome e sobrenome ex: `lucas-franca`
+- Após completar o desafio, crie um "pull request" nesse repositório comparando a sua branch com a master
+- Receberemos uma notificação do seu pull request, faremos a correção da sua solução e entraremos em contato com o email da conta do github em que foi executada o desafio
 
-### Analyzing the Bundle Size
+## FAQ
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- Posso usar o create-react-app para completar o desafio?
 
-### Making a Progressive Web App
+**Sim, você pode usar qualquer cli para criar seu projeto**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- Preciso necessariamente fazer um fork do projeto?
 
-### Advanced Configuration
+**Sim, para que possamos saber quanto tempo você levou para executar o desafio**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- Aonde estão os assets?
 
-### Deployment
+**Esse desafio não te dá nenhum asset, você terá que buscá-los por conta própria**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- Tenho mais dúvidas, com quem posso entrar em contato?
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+**Entre em contato com André Oliveira (andre.oliveira@delfosim.com)**
