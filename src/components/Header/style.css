@@ -10,3 +10,7 @@ img {
   height: 2.5rem;
   width: auto;
 }
+
+img:hover {
+  cursor: pointer;
+}

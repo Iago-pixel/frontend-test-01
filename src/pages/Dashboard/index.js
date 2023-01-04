@@ -16,13 +16,15 @@ import { addWidgetThunk } from "../../store/modules/widgets/thunks";
 import "./style.css";
 
 export const Dashboard = () => {
+  const dispatch = useDispatch();
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const [name, setName] = useState("");
   const [data, setData] = useState("");
-  const dispatch = useDispatch();
+  const [search, setSearch] = useState("");
   const widgets = useSelector((state) => state.widgets);
 
   const handleAddWidget = () => {
@@ -42,12 +44,20 @@ export const Dashboard = () => {
           id="search"
           label="Search..."
           variant="outlined"
+          value={search}
+          onChange={(e) => handleChange(e, setSearch)}
         />
       </Header>
       <main>
-        {widgets.map((e, i) => (
-          <Card key={i} name={e.name} data={e.data} />
-        ))}
+        <div id="card-list">
+          {search === ""
+            ? widgets.map((e, i) => (
+                <Card key={i} name={e.name} data={e.data} />
+              ))
+            : widgets
+                .filter((e, i) => e.name.search(search) !== -1)
+                .map((e, i) => <Card key={i} name={e.name} data={e.data} />)}
+        </div>
         <div>
           <Button onClick={handleOpen}>
             <AddCircleSharpIcon
