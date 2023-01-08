@@ -1,4 +1,3 @@
-import "./App.css";
 import { Switchs } from "./routes";
 
 const App = () => {
