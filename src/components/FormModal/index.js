@@ -44,7 +44,6 @@ export const FormModel = ({
   actualNameWidget = "",
   actualYData = [],
   actualYAxis = "",
-  handleCloseMenu = () => {},
   ...rest
 }) => {
   const classes = useStyles();
@@ -123,7 +122,6 @@ export const FormModel = ({
         }
 
         handleCloseModel();
-        handleCloseMenu();
       }
     }
   };

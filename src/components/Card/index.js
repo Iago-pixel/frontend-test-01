@@ -5,13 +5,12 @@ import MenuItem from "@mui/material/MenuItem";
 import { makeStyles } from "@mui/styles";
 
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
-import { removeWidget } from "../../store/modules/widgets/actions";
 import { FormModel } from "../FormModal";
+import { RemoveAlert } from "../RemoveAlert";
 
 const useStyles = makeStyles({
   card: {
@@ -42,18 +41,28 @@ const useStyles = makeStyles({
 
 export const Card = ({ name, yData, yAxis, ...rest }) => {
   const classes = useStyles();
-  const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
+  const openMenu = Boolean(anchorEl);
 
-  const [openModel, setOpenModel] = useState(false);
+  const [openEditModel, setOpenEditModel] = useState(false);
+  const [openRemoveModel, setOpenRemoveModel] = useState(false);
 
-  const handleOpenModel = () => {
-    setOpenModel(true);
+  const handleOpenRemoveModel = () => {
+    setOpenRemoveModel(true);
   };
-  const handleCloseModel = () => {
-    setOpenModel(false);
+
+  const handleCloseRemoveModel = () => {
+    setOpenRemoveModel(false);
+    handleCloseMenu();
+  };
+
+  const handleOpenEditModel = () => {
+    setOpenEditModel(true);
+  };
+
+  const handleCloseEditModel = () => {
+    setOpenEditModel(false);
     handleCloseMenu();
   };
 
@@ -63,11 +72,6 @@ export const Card = ({ name, yData, yAxis, ...rest }) => {
 
   const handleCloseMenu = () => {
     setAnchorEl(null);
-  };
-
-  const handleRemove = () => {
-    dispatch(removeWidget({ name }));
-    handleCloseMenu();
   };
 
   const options = {
@@ -92,9 +96,9 @@ export const Card = ({ name, yData, yAxis, ...rest }) => {
         <h1 className={classes.cardTitle}>{name}</h1>
         <div>
           <IconButton
-            aria-controls={open ? "basic-menu" : undefined}
+            aria-controls={openMenu ? "basic-menu" : undefined}
             aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
+            aria-expanded={openMenu ? "true" : undefined}
             onClick={handleOpenMenu}
           >
             <DragIndicatorIcon className={classes.cardMenu} />
@@ -102,27 +106,36 @@ export const Card = ({ name, yData, yAxis, ...rest }) => {
           <Menu
             id="basic-menu"
             anchorEl={anchorEl}
-            open={open}
+            open={openMenu}
             onClose={handleCloseMenu}
             MenuListProps={{
               "aria-labelledby": "basic-button",
             }}
           >
             <div>
-              <MenuItem onClick={() => handleOpenModel()}>Edit</MenuItem>
+              <MenuItem onClick={() => handleOpenEditModel()}>Edit</MenuItem>
               <FormModel
                 modalName="Edit widget"
                 buttonName="Change"
                 type="edit"
-                openModel={openModel}
-                handleCloseModel={handleCloseModel}
+                openModel={openEditModel}
+                handleCloseModel={handleCloseEditModel}
                 actualNameWidget={name}
                 actualYData={yData}
                 actualYAxis={yAxis}
                 handleCloseMenu={handleCloseMenu}
               />
             </div>
-            <MenuItem onClick={handleRemove}>Remove</MenuItem>
+            <div>
+              <MenuItem onClick={() => handleOpenRemoveModel()}>
+                Remove
+              </MenuItem>
+              <RemoveAlert
+                openModel={openRemoveModel}
+                handleCloseModel={handleCloseRemoveModel}
+                widgetName={name}
+              />
+            </div>
           </Menu>
         </div>
       </header>
