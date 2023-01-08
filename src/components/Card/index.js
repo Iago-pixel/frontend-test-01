@@ -2,57 +2,62 @@ import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import { TextField } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
-import { removeWidget } from "../../store/modules/widgets/actions";
-import { submitData, handleChange } from "../../Utils";
-import { editWidgetThunk } from "../../store/modules/widgets/thunks";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
-import "./style.css";
+import { removeWidget } from "../../store/modules/widgets/actions";
+import { FormModel } from "../FormModal";
+
+const useStyles = makeStyles({
+  card: {
+    border: "1px grey solid",
+    marginBottom: "2rem",
+  },
+  cardHeader: {
+    borderBottom: "1px grey solid",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    color: "lightgrey",
+  },
+  cardTitle: {
+    margin: "0",
+    fontSize: "1.5rem",
+    padding: "10px",
+  },
+  cardMenu: {
+    "&hover": {
+      cursor: "pointer",
+    },
+  },
+  cardBody: {
+    padding: "1rem",
+  },
+});
 
 export const Card = ({ name, yData, yAxis, ...rest }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const open = Boolean(anchorEl);
+  const classes = useStyles();
   const dispatch = useDispatch();
 
-  const [newName, setNewName] = useState(name);
-  const [newYData, setNewYData] = useState(yData.join("|"));
-  const [newYAxis, setNewYAxis] = useState(yAxis);
-  const [inputNameError, setInputNameError] = useState(false);
-  const [inputYDataError, setInputYDataError] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
 
   const [openModel, setOpenModel] = useState(false);
-
-  const widgets = useSelector((state) => state.widgets);
-
-  useEffect(() => {
-    setInputNameError(
-      widgets.some((el) => el.name === newName && newName !== name)
-    );
-  }, [newName, widgets, name]);
-
-  useEffect(() => {
-    const regex = new RegExp(/^([1-9]\|)*[1-9]$/);
-    setInputYDataError(newYData.search(regex) === -1);
-  }, [newYData]);
 
   const handleOpenModel = () => {
     setOpenModel(true);
   };
-  const handleCloseModel = () => setOpenModel(false);
+  const handleCloseModel = () => {
+    setOpenModel(false);
+    handleCloseMenu();
+  };
 
-  const handleClick = (e) => {
+  const handleOpenMenu = (e) => {
     setAnchorEl(e.currentTarget);
   };
 
@@ -63,23 +68,6 @@ export const Card = ({ name, yData, yAxis, ...rest }) => {
   const handleRemove = () => {
     dispatch(removeWidget({ name }));
     handleCloseMenu();
-  };
-
-  const handleEdit = () => {
-    const error = inputYDataError || inputNameError;
-
-    if (!error) {
-      dispatch(
-        editWidgetThunk({
-          oldName: name,
-          name: newName,
-          yAxis: newYAxis,
-          yData: newYData,
-        })
-      );
-      handleCloseModel();
-      handleCloseMenu();
-    }
   };
 
   const options = {
@@ -99,17 +87,17 @@ export const Card = ({ name, yData, yAxis, ...rest }) => {
   };
 
   return (
-    <div className="card" {...rest}>
-      <header className="card-header">
-        <h1 className="card-title">{name}</h1>
+    <div className={classes.card} {...rest}>
+      <header className={classes.cardHeader}>
+        <h1 className={classes.cardTitle}>{name}</h1>
         <div>
           <IconButton
             aria-controls={open ? "basic-menu" : undefined}
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
-            onClick={handleClick}
+            onClick={handleOpenMenu}
           >
-            <DragIndicatorIcon className="card-menu" />
+            <DragIndicatorIcon className={classes.cardMenu} />
           </IconButton>
           <Menu
             id="basic-menu"
@@ -122,84 +110,23 @@ export const Card = ({ name, yData, yAxis, ...rest }) => {
           >
             <div>
               <MenuItem onClick={() => handleOpenModel()}>Edit</MenuItem>
-              <Modal
-                open={openModel}
-                onClose={handleCloseModel}
-                aria-labelledby="modal-modal-title"
-              >
-                <Box
-                  component="form"
-                  onSubmit={(e) => submitData(e, { name, newName, newYData })}
-                >
-                  <Box
-                    sx={{
-                      position: "absolute",
-                      top: "50%",
-                      left: "50%",
-                      transform: "translate(-50%, -50%)",
-                      background: "white",
-                      border: "1px lightgrey solid",
-                      padding: "10px",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      flexDirection: "column",
-                    }}
-                  >
-                    <Typography
-                      id="modal-modal-title"
-                      sx={{
-                        color: "lightgrey",
-                        marginBottom: "1rem",
-                        fontWeight: "bold",
-                      }}
-                      component="h1"
-                    >
-                      Add widget
-                    </Typography>
-                    <TextField
-                      size="small"
-                      id="inputName"
-                      label="name"
-                      variant="outlined"
-                      value={newName}
-                      onChange={(e) => handleChange(e, setNewName)}
-                      sx={{ paddingBottom: "10px" }}
-                      error={inputNameError}
-                      helperText={inputNameError ? "Name already exist" : ""}
-                    />
-                    <TextField
-                      size="small"
-                      id="inputYAxisName"
-                      label="yAxis' name"
-                      variant="outlined"
-                      value={newYAxis}
-                      onChange={(e) => handleChange(e, setNewYAxis)}
-                      sx={{ paddingBottom: "10px" }}
-                    />
-                    <TextField
-                      size="small"
-                      id="inputYData"
-                      label="yData"
-                      variant="outlined"
-                      value={newYData}
-                      onChange={(e) => handleChange(e, setNewYData)}
-                      sx={{ paddingBottom: "10px" }}
-                      error={inputYDataError}
-                      helperText="example format: 1|3|2|7"
-                    />
-                    <Button variant="contained" onClick={() => handleEdit()}>
-                      Change
-                    </Button>
-                  </Box>
-                </Box>
-              </Modal>
+              <FormModel
+                modalName="Edit widget"
+                buttonName="Change"
+                type="edit"
+                openModel={openModel}
+                handleCloseModel={handleCloseModel}
+                actualNameWidget={name}
+                actualYData={yData}
+                actualYAxis={yAxis}
+                handleCloseMenu={handleCloseMenu}
+              />
             </div>
             <MenuItem onClick={handleRemove}>Remove</MenuItem>
           </Menu>
         </div>
       </header>
-      <div className="card-body">
+      <div className={classes.cardBody}>
         <HighchartsReact highcharts={Highcharts} options={options} />
       </div>
     </div>
