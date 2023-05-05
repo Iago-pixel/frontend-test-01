@@ -29,7 +29,7 @@ You may also see any lint errors in the console.
 
 Não será passado prazo para entrega, verifique os pré-requisitos e nos dê seu prazo, mas fique atento pois vamos avaliar mais rigorosamente seu código quanto mais demorar para entregar a partir da data em que foi feito o fork desse repositório. A ideia é simples, você terá que desenvolver (com dados falsos) seguindo os pré-requisitos e o seguinte layout:
 
-![Desafio](images/tela-01.png?raw=true "Desafio")
+![Desafio](./src/img/tela-01.png?raw=true "Desafio")
 
 ## Ações
 
